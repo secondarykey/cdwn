@@ -20,6 +20,7 @@ func Get(url string, progress bool) (*bytes.Buffer, error) {
 
 	if progress {
 		p := NewProgressWriter(&b, resp.ContentLength)
+		p.Event = PrefixProgressFunc("Download")
 		_, err = p.Copy(resp.Body)
 		if err != nil {
 			return nil, xerrors.Errorf("io.Copy(): %w", err)

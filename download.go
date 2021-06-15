@@ -14,10 +14,11 @@ import (
 
 func DownloadAndWrite(dir string, url string) error {
 
-	fmt.Println("ZIP File Download", url)
+	fmt.Println("ZIP File", url)
+
 	buf, err := Get(url, true)
 	if err != nil {
-		return xerrors.Errorf("stream.Get() error: %w", err)
+		return xerrors.Errorf("Get() error: %w", err)
 	}
 	fmt.Println()
 
@@ -43,7 +44,7 @@ func DownloadAndWrite(dir string, url string) error {
 		return xerrors.Errorf("CopyZIP() error: %w", err)
 	}
 
-	fmt.Println("Create Chrome Driver", path)
+	fmt.Printf("Create Chrome Driver[%s]\n", path)
 	return nil
 }
 
@@ -68,11 +69,12 @@ func CopyZIP(w io.Writer, r *bytes.Reader) error {
 	info := f.FileHeader.FileInfo()
 	prog := NewProgressWriter(w, info.Size())
 
-	fmt.Println("Uncompressed ZIP File")
+	prog.Event = PrefixProgressFunc("Uncompress")
 	_, err = prog.Copy(fp)
 	if err != nil {
 		return xerrors.Errorf("io.Open() error: %w", err)
 	}
 	fmt.Println()
+
 	return nil
 }

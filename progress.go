@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"strings"
 )
 
 type ProgressWriter struct {
@@ -32,4 +33,20 @@ func (w *ProgressWriter) Write(b []byte) (int, error) {
 	w.now += int64(len(b))
 	w.Event(w.now, w.Total)
 	return w.w.Write(b)
+}
+
+func PrefixProgressFunc(prefix string) func(int64, int64) {
+	return func(now, total int64) {
+		rate := float64(now) / float64(total) * 100
+		num := rate / 5.0
+
+		bar := strings.Repeat("=", int(num))
+		if len(bar) < 20 {
+			bar += ">"
+		}
+		if len(bar) < 20 {
+			bar += strings.Repeat("-", 20-len(bar))
+		}
+		fmt.Printf("\r%12s[%s]%.0f%%(%d/%d)", prefix, bar, rate, now, total)
+	}
 }

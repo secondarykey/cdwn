@@ -9,14 +9,15 @@ import (
 	"golang.org/x/xerrors"
 )
 
-func getDownloadURLs(v *Version) ([]string, error) {
+func getURLs(v *Version) ([]string, error) {
 
 	xmlURL := fmt.Sprintf(XMLURL, v.Major)
 
-	fmt.Println("Get Chrome Version List:", xmlURL)
+	fmt.Println("Version List URL:", xmlURL)
+
 	b, err := Get(xmlURL, false)
 	if err != nil {
-		return nil, xerrors.Errorf("stream.LoadURL() error: %w", err)
+		return nil, xerrors.Errorf("Get() error: %w", err)
 	}
 
 	var cdxml XMLResponse
@@ -27,7 +28,7 @@ func getDownloadURLs(v *Version) ([]string, error) {
 
 	ps := cdxml.CommonPrefixes
 	if len(ps) <= 0 {
-		return nil, fmt.Errorf("NotFound")
+		return nil, fmt.Errorf("Version Not Found")
 	}
 
 	arch := getArch(true)

@@ -54,7 +54,6 @@ func run() error {
 		if err != nil {
 			return xerrors.Errorf("GetChromeVersion() error: %w", err)
 		}
-
 		fmt.Println("Now Install Chrome Version", ver)
 	}
 
@@ -62,7 +61,7 @@ func run() error {
 		return fmt.Errorf("version parse error[%s]", ver.Src)
 	}
 
-	urls, err := getDownloadURLs(ver)
+	urls, err := getURLs(ver)
 	if err != nil {
 		return xerrors.Errorf("printDownloadURL() error: %w", err)
 	}
@@ -78,6 +77,7 @@ func run() error {
 			return xerrors.Errorf("DownloadAndWrite() error: %w", err)
 		}
 	} else {
+		fmt.Println("Download URL List")
 		for idx, url := range urls {
 			fmt.Printf("URL%d:[%s]\n", idx+1, url)
 		}
