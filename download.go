@@ -31,7 +31,7 @@ func DownloadAndWrite(dir string, url string) error {
 		path = filepath.Join(dir, name)
 	}
 
-	fp, err := os.Create(path)
+	fp, err := os.OpenFile(path, os.O_CREATE|os.O_WRONLY, 755)
 	if err != nil {
 		return xerrors.Errorf("os.Create() error: %w", err)
 	}

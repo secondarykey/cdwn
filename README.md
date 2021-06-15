@@ -3,6 +3,11 @@ cdwn is ChromeDriver Download command
 Find and install the apporopriate Chrome Driver from the version of Chrome installed on your device.
 In the case of Windows,it searches from the registry.
 
+Version below 70(Verion2) are not supported.
+
+If you can not download it, please check it from the URL.
+https://chromedriver.storage.googleapis.com/index.html
+
 # Print
 
 $ cdwn
