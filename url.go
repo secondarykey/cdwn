@@ -31,11 +31,17 @@ func getURLs(v *Version) ([]string, error) {
 		return nil, fmt.Errorf("Version Not Found")
 	}
 
-	arch := getArch(true)
+	arch := getArch()
+
+	if arch == MacM1Arch {
+		if !v.NotM1Support() {
+			return nil, fmt.Errorf("Not M1 Support jVersion[%v]", v)
+		}
+	}
+
 	fn := fmt.Sprintf(ZIPFileName, arch)
 
 	prefixes := cdxml.CommonPrefixes
-
 	sort.Slice(prefixes, func(i, j int) bool {
 
 		p1 := prefixes[i].Prefix
@@ -57,29 +63,18 @@ func getURLs(v *Version) ([]string, error) {
 	return rtn, nil
 }
 
-func getArch(bit64 bool) string {
+func getArch() string {
 
 	switch runtime.GOOS {
 	case "windows":
 		return WindowsArch
 	case "darwin":
-		if !bit64 {
-			return Mac32Arch
+		if runtime.GOARCH == "arm64" {
+			return MacM1Arch
 		}
-		if isM1() {
-			return Mac64M1Arch
-		}
-		return Mac64Arch
+		return MacArch
 	case "linux":
-		if !bit64 {
-			return Linux32Arch
-		}
-		return Linux64Arch
+		return LinuxArch
 	}
 	return ""
-}
-
-func isM1() bool {
-	//TODO NotSupport
-	return false
 }

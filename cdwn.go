@@ -61,6 +61,10 @@ func run() error {
 		return fmt.Errorf("version parse error[%s]", ver.Src)
 	}
 
+	if ver.NotSupport() {
+		return fmt.Errorf("Not Support Version[%s]", ver.Src)
+	}
+
 	urls, err := getURLs(ver)
 	if err != nil {
 		return xerrors.Errorf("printDownloadURL() error: %w", err)

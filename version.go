@@ -137,3 +137,17 @@ func (v *Version) IsZero() bool {
 func (v *Version) String() string {
 	return v.Src
 }
+
+func (v *Version) NotSupport() bool {
+	if v.Major < 70 {
+		return true
+	}
+	return false
+}
+
+func (v *Version) NotM1Support() bool {
+	if v.Major >= 87 {
+		return true
+	}
+	return false
+}
