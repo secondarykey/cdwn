@@ -32,7 +32,7 @@ func (w *ProgressWriter) Copy(r io.Reader) (int64, error) {
 func (w *ProgressWriter) Write(b []byte) (int, error) {
 	w.now += int64(len(b))
 	w.Event(w.now, w.Total)
-	return w.w.Write(b)
+	return len(b), nil
 }
 
 func PrefixProgressFunc(prefix string) func(int64, int64) {
