@@ -8,6 +8,14 @@ Version below 70(Verion2) are not supported.
 If you can not download it, please check it from the URL.
 https://chromedriver.storage.googleapis.com/index.html
 
+# Install
+
+$ go get github.com/secondarykey/cdwn
+
+go 1.16 later versions
+
+$ go install github.com/secondarykey/cdwn@latest
+
 # Print
 
 $ cdwn
