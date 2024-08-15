@@ -65,26 +65,20 @@ func run() error {
 		return fmt.Errorf("Not Support Version[%s]", ver.Src)
 	}
 
-	urls, err := getURLs(ver)
+	u, err := getURL(ver.String())
 	if err != nil {
-		return xerrors.Errorf("printDownloadURL() error: %w", err)
-	}
-
-	if len(urls) <= 0 {
-		return xerrors.Errorf("Not Found Version")
+		return xerrors.Errorf("getURL() error: %w", err)
 	}
 
 	if download {
-		url := urls[0]
-		err = DownloadAndWrite(dir, url)
+		err = DownloadAndWrite(dir, u)
 		if err != nil {
 			return xerrors.Errorf("DownloadAndWrite() error: %w", err)
 		}
+
+		//TODO run command
 	} else {
-		fmt.Println("Download URL List")
-		for idx, url := range urls {
-			fmt.Printf("URL%d:[%s]\n", idx+1, url)
-		}
+		fmt.Println("Download URL:", u)
 	}
 
 	return nil
